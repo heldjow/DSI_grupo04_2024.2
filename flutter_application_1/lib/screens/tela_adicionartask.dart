@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // For formatting dates
+import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/task.dart'; 
 
 class AdicionarTask extends StatefulWidget {
   const AdicionarTask({super.key});
@@ -22,10 +25,22 @@ class _AdicionarTaskState extends State<AdicionarTask> {
     _timeController.text = DateFormat('HH:mm').format(DateTime.now());
   }
 
-  void _validadeDate(){
+  Future<void> _validadeDate() async {
+    final userCredential = FirebaseAuth.instance.currentUser;
+    
     if (_titleController.text.isNotEmpty&&_descriptionController.text.isNotEmpty){
       // add to database
+      final task = Task(id: "", 
+      userId: userCredential!.uid,
+      title: _titleController.text, 
+      description: _descriptionController.text, 
+      date: _dateController.text, 
+      hour: _timeController.text);
+
+      await FirebaseFirestore.instance.collection('tasks').add(task.toJson());
+
       Navigator.of(context).pop();
+
     }else if(_titleController.text.isEmpty || _descriptionController.text.isEmpty){
       ScaffoldMessenger.of(context).showSnackBar(
          SnackBar(
@@ -49,6 +64,7 @@ class _AdicionarTaskState extends State<AdicionarTask> {
       });
     }
   }
+
 // Time Picker Function
   Future<void> _selectTime() async {
     TimeOfDay? pickedTime = await showTimePicker(
@@ -66,6 +82,7 @@ class _AdicionarTaskState extends State<AdicionarTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 232, 230, 230),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 28),
@@ -118,9 +135,9 @@ class _AdicionarTaskState extends State<AdicionarTask> {
 
             // Date Input 
             TextField(
-              controller: _dateController, // Attach controller
-              readOnly: true, // Prevent manual typing (optional)
-              onTap: _selectDate, // Open Date Picker on tap
+              controller: _dateController, 
+              readOnly: true, 
+              onTap: _selectDate,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),

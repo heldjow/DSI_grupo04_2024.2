@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:proAluno/Widgets/bottomNavBar.dart';
 import 'screens/tela_cadastro.dart';
 import 'screens/tela_Login.dart';
 import 'screens/tela_todolist.dart';
@@ -16,7 +15,7 @@ void main() async {
   // Inicializando o Firebase com as opções
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions
-        .currentPlatform, // Usando as opções geradas automaticamente
+        .currentPlatform, 
   );
 
   runApp(const MyApp());

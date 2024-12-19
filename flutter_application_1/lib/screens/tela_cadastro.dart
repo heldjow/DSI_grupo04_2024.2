@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'auth_registro.dart'; // Importando a classe de serviço de autenticação
+import 'auth_registro.dart'; 
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -47,13 +47,12 @@ class SignupScreenState extends State<SignupScreen> {
 
     try {
       // Criação do usuário com Firebase Authentication
+      // ignore: unused_local_variable
       UserCredential userCredential = await _authService.cadastrarUsuario(
           _emailController.text, _senhaController.text);
 
       // Exibe mensagem de sucesso
       _showSnackBar('Cadastro realizado com sucesso!');
-      // Após o cadastro, você pode realizar navegação ou outras ações
-      // Exemplo: Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
       // Tratamento de erros mais específicos
       String errorMessage = 'Erro desconhecido';
@@ -82,7 +81,7 @@ class SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Color.fromARGB(255, 232, 230, 230),
       body: Stack(
         children: [
           // Botão de Voltar
